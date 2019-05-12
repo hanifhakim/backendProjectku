@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const userRouter = require('./routers/userRouter')
 const addressRouter = require('./routers/addressRouter')
+const productRouter = require('./routers/productRouter')
 
 const app = express()
 const port = 2010 // akses dari environment
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 app.use(cors())
 app.use(express.json())
 app.use(userRouter)
+app.use(productRouter)
 app.use(addressRouter)
 
 
