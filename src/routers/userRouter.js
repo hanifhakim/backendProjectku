@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs')
+// const fs = require('fs')
 
 const uploadDir = path.join(__dirname + '/../uploads/avatar' )
-console.log(__dirname);
+// console.log(__dirname);
 const {authControl, userControl} = require('../controllers/index')
 
 const avaStorage = multer.diskStorage({
@@ -31,6 +31,21 @@ const upAva = multer ({
 
 //GET USER by USERNAME
 router.get('/users/:username', authControl.getUser )
+
+//READ ALL USER
+router.get('/allusers', userControl.getAllUser )
+    //Sort by username
+    router.get(`/sortusername`, userControl.sortUsername)
+    //Sort by first name
+    router.get(`/sortfirstname`, userControl.sortFirstName)
+    //Sort by last name
+    router.get(`/sortlastname`, userControl.sortLastName)
+    //Sort by avatar
+    router.get(`/sortavatar`, userControl.sortAvatar)
+    //Sort by date asc
+    router.get(`/sortuserdateasc`, userControl.sortDateAsc)
+    //Sort by date desc
+    router.get(`/sortuserdatedesc`, userControl.sortDateDesc)
 
 //CREATE USERS
 router.post('/users', authControl.register)

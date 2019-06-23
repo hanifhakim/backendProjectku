@@ -1,11 +1,11 @@
-const router = require('express').Router()
+// const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const isEmail = require('validator/lib/isEmail')
 const conn = require('../connection/connection')
 const {sendVerify} = require('../emails/nodemailer.js')
-const multer = require('multer')
-const path = require('path')
-const fs = require('fs')
+// const multer = require('multer')
+// const path = require('path')
+// const fs = require('fs')
 
 module.exports = {
     getUser: async(req,res)=>{
@@ -39,11 +39,13 @@ module.exports = {
     },
     register:  async (req, res)=>{
         var sql= `INSERT INTO users SET ?;`
-        var sql2 = `SELECT * FROM users;`
+        // var sql2 = `SELECT * FROM users;`
         
         var arrBody = Object.keys(req.body) 
+     
         //mengubah nilai string kosong menjadi null
-        arrBody.forEach(key => {  // menghapus field yang tidak memiliki data
+        arrBody.forEach(key => { 
+            // console.log(req.body[key]);
             if(!req.body[key]) {
                 req.body[key] = null
             }       

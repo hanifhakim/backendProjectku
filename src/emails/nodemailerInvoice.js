@@ -6,10 +6,10 @@ const pdf = require('html-pdf')
 const fs = require('fs')
 
 const parentPath = path.join(__dirname, '../..')
-const fileDir = path.join(parentPath, '/src/uploads/regist') // tempat file (foto, html, pdf)
+const fileDir = path.join(parentPath, '/src/uploads/invoice') // tempat file (foto, html, pdf)
 
 
-const createPdf = (username, first_name, email, fnSendEmail) => {
+const createPdf = (order_id, username, payment_methods, shipment_methods, amount, email, fnSendEmail) => {
     var source = `
 <!DOCTYPE html>
 <head>
@@ -22,35 +22,39 @@ const createPdf = (username, first_name, email, fnSendEmail) => {
             <span class="text-left">Invoice</span>
             <span class="text-right">#{{invoice}}</span>
         </p>
-        <img src={{imgSrc}} alt="">
-        <h1>Account Details</h1>
+        <img src={{imgSrc}} height="300" width="300" alt="">
+        <h1>Order Details</h1>
         <p>
+            Order Id    : {{order_id}} <br>
             Username    : {{username}} <br>
-            First_Name  : {{first_name}} <br>
-            Email       : {{email}} <br>
-            Plan        : <strong>Free</strong>
+            Payment     : {{payment_methods}} <br>
+            Shipment    : {{shipment_methods}} <br>
+            Amount      : <strong>Rp. {{amount}}</strong>
         </p>
     </div>
 </body>
 </html>
 `
 var data = {
-    "imgSrc": "https://miro.medium.com/max/768/1*w2RAR48UbSAYv-6y_V-cdA.png",
+    "imgSrc": 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Fish_icon.svg/1101px-Fish_icon.svg.png',
+    "order_id": `${order_id}`,
     "username": `${username}`,
-    "first_name": `${first_name}`,
+    "payment_methods": `${payment_methods}`,
+    "shipment_methods": `${shipment_methods}`,
+    "amount": `${amount.toLocaleString()}`,
     "email": `${email}`
 
 }
 var template = Handlebars.compile(source) // compile teks html
 var result = template(data) // gabungkan object data dg template html
 
-fs.writeFileSync(`${fileDir}/regist_${username}.html`, result) // path, template
+fs.writeFileSync(`${fileDir}/invoice_${order_id}_${username}.html`, result) // path, template
 
-var htmls = fs.readFileSync(`${fileDir}/regist_${username}.html`, 'utf8')
+var htmls = fs.readFileSync(`${fileDir}/invoice_${order_id}_${username}.html`, 'utf8')
 
 var options = {format: 'Letter'}
 
-pdf.create(htmls, options).toFile(`${fileDir}/regist_${username}.pdf`, (err, result) => {
+pdf.create(htmls, options).toFile(`${fileDir}/invoice_${order_id}_${username}.pdf`, (err, result) => {
     if (err) return console.log(err.message);
     
     fnSendEmail()
@@ -78,29 +82,31 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const sendVerify = (username, first_name, email) => {
+const sendInvoice = (order_id, username, payment_methods, shipment_methods, amount, email) => {
     const transEmail = () =>{
     const mail = {
         from: 'Haniful Hakim <hanif.hkim@gmail.com>',
         to: email,
-        subject: 'JOBS',
-        html: `<h1> <a href ='http://localhost:2010/verify/${username}'> Klik verif</a> </h1>`,
+        subject: 'Invoice',
         attachments: [{
-            filename : `regist_${username}.pdf`,
-            path : `${fileDir}/regist_${username}.pdf`,
+            filename : `invoice_${order_id}_${username}.pdf`,
+            path : `${fileDir}/invoice_${order_id}_${username}.pdf`,
             contentType: 'application/pdf'
         }]
     }
     transporter.sendMail(mail, (err, res)=>{
         if(err) return console.log(err);
     
-        console.log('EMail terkirim');
+        // console.log('Invoice terkirim');
     })
     }
     
-    createPdf(username, first_name ,email, transEmail)
+    createPdf(order_id, username, payment_methods, shipment_methods, amount ,email, transEmail)
 }
 
+// const sendInvoice = () => {
+
+// }
 module.exports={
-    sendVerify
+    sendInvoice
 }
