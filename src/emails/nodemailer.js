@@ -19,10 +19,10 @@ const createPdf = (username, first_name, email, fnSendEmail) => {
 <body>
     <div class="container">
         <p class="display-4 d-flex justify-content-between border-bottom">
-            <span class="text-left">Invoice</span>
+            <span class="text-left">Account</span>
             <span class="text-right">#{{invoice}}</span>
         </p>
-        <img src={{imgSrc}} alt="">
+        <img src={{imgSrc}}  height="300" width="300" alt="">
         <h1>Account Details</h1>
         <p>
             Username    : {{username}} <br>
@@ -35,7 +35,7 @@ const createPdf = (username, first_name, email, fnSendEmail) => {
 </html>
 `
 var data = {
-    "imgSrc": "https://miro.medium.com/max/768/1*w2RAR48UbSAYv-6y_V-cdA.png",
+    "imgSrc": 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Fish_icon.svg/1101px-Fish_icon.svg.png',
     "username": `${username}`,
     "first_name": `${first_name}`,
     "email": `${email}`

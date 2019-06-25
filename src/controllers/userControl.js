@@ -68,6 +68,7 @@ module.exports = {
             }
             // console.log(req.body[key]);        
         })
+        
         if(req.body.password){
              req.body.password = await bcrypt.hash(req.body.password, 8)
         }
