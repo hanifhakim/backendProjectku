@@ -38,7 +38,7 @@ module.exports = {
             conn.query(sql, data, (err, result)=>{
                 if(err) return res.send(err)
 
-                result.insertedid
+                // result.insertedid
                 var product_id = result.insertId
                 var data2 = {
                     stock : req.body.stock,
@@ -265,29 +265,6 @@ module.exports = {
                 return res.send(result)
             })
     },
-
-    // readSeafood: async(req,res)=>{
-    //     // const{username}=req.params
-    //     var sql = `SELECT p.id, p.name, p.category, p.price, p.description, image, stock, pieces FROM products p
-    //             JOIN stocks s ON p.id = s.product_id WHERE p.category = 'seafood'`
-    
-    //     conn.query(sql, (err,result)=>{
-    //         if(err) return res.send(err)
-    
-    //         return res.send(result)
-    //     })
-    // },
-    // readFreshwater: async(req,res)=>{
-    //     // const{username}=req.params
-    //     var sql = `SELECT p.id, p.name, p.category, p.price, p.description, image, stock, pieces FROM products p
-    //             JOIN stocks s ON p.id = s.product_id WHERE p.category = 'freshwater'`
-    
-    //     conn.query(sql, (err,result)=>{
-    //         if(err) return res.send(err)
-    
-    //         return res.send(result)
-    //     })
-    // },
     readOne: async(req, res) => {
         id = req.params.product_id
         var sql = `SELECT p.id, p.name, p.category, p.price, p.description, image, stock, pieces FROM products p

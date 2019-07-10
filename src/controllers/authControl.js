@@ -41,6 +41,7 @@ module.exports = {
         var sql= `INSERT INTO users SET ?;`
         // var sql2 = `SELECT * FROM users;`
         
+        
         var arrBody = Object.keys(req.body) 
      
         //mengubah nilai string kosong menjadi null
@@ -50,8 +51,11 @@ module.exports = {
                 req.body[key] = null
             }       
         })
+        if(req.body.password === null){
+            return res.send('error password ')
+        }
         var data = req.body
-    
+        
         if(!req.body.email || !isEmail(req.body.email)) return res.send("Email is not valid")
     
         req.body.password = await bcrypt.hash(req.body.password, 8)

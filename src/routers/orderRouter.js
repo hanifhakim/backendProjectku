@@ -62,7 +62,7 @@ router.patch('/confirmshipment/:order_id', orderControl.updateConfirmShipment)
 //Update table stock minus (looping product_id)
 router.patch('/minusstock/:product_id', orderControl.updateStock)
 
-//Read Order Details
+//Read Order Details for looping
 router.get(`/getorderdetails/:order_id`, orderControl.getOrderDetails)
 
 //Read Stock with product_id

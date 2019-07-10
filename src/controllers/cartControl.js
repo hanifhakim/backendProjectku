@@ -11,7 +11,7 @@ module.exports = {
 
             if(result.length){
                 qtyOld=result[0].qty
-                const sql3 = `UPDATE cart SET qty=${qtyOld + qty} WHERE product_id=${product_id}`
+                const sql3 = `UPDATE cart SET qty=${qtyOld + qty}, cls='${cls}' WHERE product_id=${product_id}`
                 
                 conn.query(sql3, (err, result) => {
                     if(err) return res.send(err)

@@ -164,13 +164,15 @@ module.exports = {
     },
     getAllOrder: (req, res) => {
         const sql = `SELECT o.id, o.order_status, o.user_id, u.username, p.id AS product_id, p.name, 
-        od.order_quantity, od.price_item, pa.payment_methods, pa.amount, pa.payment_img, s.shipment_methods, s.shipment_price,
-        COUNT(o.id) FROM orders o 
+        od.order_quantity, od.price_item, pa.payment_methods, pa.amount, pa.payment_img, s.shipment_methods, 
+        s.shipment_price, a.nama_depan, a.nama_belakang, a.provinsi, a.kabupaten_kota, a.kecamatan,
+        a.nama_jalan, a.kodepos, a.telepon, COUNT(o.id) FROM orders o 
         JOIN users u ON u.id = o.user_id
         JOIN order_details od ON o.id = od.order_id
         JOIN products p ON od.product_id = p.id
         JOIN shipment s ON o.id = s.order_id
         JOIN payment pa ON o.id = pa.order_id
+        JOIN address a on s.shipment_address_id = a.id
         GROUP BY o.id`
 
         conn.query(sql, (err, result)=>{
@@ -204,8 +206,8 @@ module.exports = {
         const {user_id} = req.params
 
         const sql = `SELECT o.id, o.order_status, o.user_id, u.username, p.id AS product_id, p.name, 
-        od.order_quantity, od.price_item, pa.payment_methods, pa.amount, pa.payment_img, s.shipment_methods, s.shipment_price,
-        COUNT(o.id) FROM orders o 
+        od.order_quantity, od.price_item, pa.payment_methods, pa.amount, pa.payment_img, s.shipment_methods, 
+        s.shipment_price, COUNT(o.id) FROM orders o 
         JOIN users u ON u.id = o.user_id
         JOIN order_details od ON o.id = od.order_id
         JOIN products p ON od.product_id = p.id
@@ -237,12 +239,14 @@ module.exports = {
     getOrderWithId: (req, res) => {
         const {user_id, order_id} = req.params
         const sql = `SELECT o.id, o.order_status, u.username, p.name, od.order_quantity, od.price_item,
-        pa.payment_methods, pa.amount, s.shipment_methods FROM orders o 
+        pa.payment_methods, pa.amount, s.shipment_methods, a.nama_depan, a.nama_belakang, a.provinsi, 
+        a.kabupaten_kota, a.kecamatan, a.nama_jalan, a.kodepos, a.telepon  FROM orders o 
         JOIN users u ON u.id = o.user_id
         JOIN order_details od ON o.id = od.order_id
         JOIN products p ON od.product_id = p.id
         JOIN shipment s ON o.id = s.order_id
         JOIN payment pa ON o.id = pa.order_id
+        JOIN address a on s.shipment_address_id = a.id
         WHERE u.id = ${user_id} AND o.id=${order_id}`
 
         conn.query(sql, (err, result)=>{
